@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <title>D3 and Scalable Vector Graphics</title>
+
+    <style></style>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css"/>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.js"></script>
+
+</head>
+<body>
+    <h1>Births In Ireland In 2017</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <h2>DC BarChart</h2>
+            <div>
+            <h3>Total Births Per County</h3>
+            <div id="total-births-per-county"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3>Total Births Per Province</h3>
+        <div id="births_per_province"></div>
+    </div>
+
+    <div>
+        <h3>Births Per Province - Married</h3>
+        <div id="births-married"></div>
+    </div>
+    
+    <div>
+        <h3>Births Per Province - test</h3>
+        <div id="births-test"></div>
+    </div>
+
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <h2>DC BarChart</h2>
+                                                            <div>
+                                                            <h3>Total Births Per County</h3>
+                                                            <div id="stacked-chart-test"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+    <script>
+    var transactionsData = [
+{"county":	"Dublin",	"marital_status":	"Married",	"province":	"Leinster",	"number":	11321},
+{"county":	"Dublin",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	7535},
+{"county":	"Kildare",	"marital_status":	"Married",	"province":	"Leinster",	"number":	2066},
+{"county":	"Kildare",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	1116},
+{"county":	"Cork",	"marital_status":	"Married",	"province":	"Munster",	"number":	4457},
+{"county":	"Cork",	"marital_status":	"Unmarried",	"province":	"Munster",	"number":	2387},
+{"county":	"Galway",	"marital_status":	"Married",	"province":	"Connacht",	"number":	2351},
+{"county":	"Galway",	"marital_status":	"Unmarried",	"province":	"Connacht",	"number":	977},
+{"county":	"Meath",	"marital_status":	"Married",	"province":	"Leinster",	"number":	1781},
+{"county":	"Meath",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	971},
+{"county":	"Carlow",	"marital_status":	"Married",	"province":	"Leinster",	"number":	452},
+{"county":	"Carlow",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	314},
+{"county":	"Kilkenny",	"marital_status":	"Married",	"province":	"Leinster",	"number": 770},
+{"county":	"Kilkenny",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	413},
+{"county":	"Laoise",	"marital_status":	"Married",	"province":	"Leinster",	"number":	725},
+{"county":	"Laoise",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	482},
+{"county":	"Longford",	"marital_status":	"Married",	"province":	"Leinster",	"number":	327},
+{"county":	"Longford",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	231},
+{"county":	"Louth",	"marital_status":	"Married",	"province":	"Leinster",	"number":	970},
+{"county":	"Louth",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	768},
+{"county":	"Offaly",	"marital_status":	"Married",	"province":	"Leinster",	"number":	624},
+{"county":	"Offaly",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	366},
+{"county":	"Westmeath",	"marital_status":	"Married",	"province":	"Leinster",	"number":	749},
+{"county":	"Westmeath",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	485},
+{"county":	"Wexford",	"marital_status":	"Married",	"province":	"Leinster",	"number":	993},
+{"county":	"Wexford",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	918},
+{"county":	"Wicklow",	"marital_status":	"Married",	"province":	"Leinster",	"number":	1118},
+{"county":	"Wicklow",	"marital_status":	"Unmarried",	"province":	"Leinster",	"number":	773},
+{"county":	"Clare",	"marital_status":	"Married",	"province":	"Munster",	"number":	931},
+{"county":	"Clare",	"marital_status":	"Unmarried",	"province":	"Munster",	"number":	499},
+{"county":	"Kerry",	"marital_status":	"Married",	"province":	"Munster",	"number":	1004},
+{"county":	"Kerry",	"marital_status":	"Unmarried",	"province":	"Munster",	"number":	622},
+{"county":	"Limerick",	"marital_status":	"Married",	"province":	"Munster",	"number":	1474},
+{"county":	"Limerick",	"marital_status":	"Unmarried",	"province":	"Munster",	"number":	1099},
+{"county":	"Tipperary",	"marital_status":	"Married",	"province":	"Munster",	"number":	1191},
+{"county":	"Tipperary",	"marital_status":	"Unmarried",	"province":	"Munster",	"number":	844},
+{"county":	"Waterford",	"marital_status":	"Married",	"province":	"Munster",	"number":	740},
+{"county":	"Waterford",	"marital_status":	"Unmarried",	"province":	"Munster",	"number":	666},
+{"county":	"Letrim",	"marital_status":	"Married",	"province":	"Connacht",	"number":	295},
+{"county":	"Letrim",	"marital_status":	"Unmarried",	"province":	"Connacht",	"number":	113},
+{"county":	"Mayo",	"marital_status":	"Married",	"province":	"Connacht",	"number":	1012},
+{"county":	"Mayo",	"marital_status":	"Unmarried",	"province":	"Connacht",	"number":	530},
+{"county":	"Roscommon",	"marital_status":	"Married",	"province":	"Connacht",	"number":	540},
+{"county":	"Roscommon",	"marital_status":	"Unmarried",	"province":	"Connacht",	"number":	232},
+{"county":	"Sligo",	"marital_status":	"Married",	"province":	"Connacht",	"number":	463},
+{"county":	"Sligo",	"marital_status":	"Unmarried",	"province":	"Connacht",	"number":	274},
+{"county":	"Cavan",	"marital_status":	"Married",	"province":	"Ulster",	"number":	704},
+{"county":	"Cavan",	"marital_status":	"Unmarried",	"province":	"Ulster",	"number":	377},
+{"county":	"Donegal",	"marital_status":	"Married",	"province":	"Ulster",	"number":	1129},
+{"county":	"Donegal",	"marital_status":	"Unmarried",	"province":	"Ulster",	"number":	735},
+{"county":	"Monaghan",	"marital_status":	"Married",	"province":	"Ulster",	"number":	526},
+{"county":	"Monaghan",	"marital_status":	"Unmarried",	"province":	"Ulster",	"number":	275},
+
+
+
+    ];
+    var ndx = crossfilter(transactionsData);
+    
+/----------------------------------------------------------Big barchart with all counties-------------/    
+    var county_dim = ndx.dimension(dc.pluck('county'));
+    var total_births_per_county = county_dim.group().reduceSum(dc.pluck('number'));
+    dc.barChart("#total-births-per-county")
+        .width(1300)
+        .height(350)
+        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .dimension(county_dim)
+        .group(total_births_per_county)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("County")
+        .yAxis().ticks(4);
+        
+/----------------------------------------------------------small barchart births by province-------------/        
+    var province_dim = ndx.dimension(dc.pluck('province'));
+    var total_births_per_province = province_dim.group().reduceSum(dc.pluck('number'));
+    dc.barChart("#births_per_province")
+        .width(300)
+        .height(150)
+        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .dimension(province_dim)
+        .group(total_births_per_province)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("By Province")
+        .yAxis().ticks(4);
+
+/----------------------------------------------------------small barchart births by marital status----------/         
+    var married_dim = ndx.dimension(dc.pluck('marital_status'));
+    var total_births_married = married_dim.group().reduceSum(dc.pluck('number'));
+    dc.barChart("#births-married")
+        .width(300)
+        .height(150)
+        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .dimension(married_dim)
+        .group(total_births_married)
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel("Married")
+        .yAxis().ticks(4);
+        
+/----------------------------------------------------------small barchart TESTING GROUND----------/         
+        var test_dim = ndx.dimension(dc.pluck('marital_status'));
+    var birth_test = test_dim.group().reduceSum(dc.pluck('number'));
+    
+    dc.pieChart("#births-test")
+        .height(330)
+        .radius(90)
+        .transitionDuration(1500)
+        .dimension(test_dim)
+        .group(birth_test)
+
+    
+                                    var county_dim = ndx.dimension(dc.pluck('county'));
+                                    
+                                    var birthsByCountyM = county_dim.group().reduceSum(function (d) {
+                                    if (d.marital_status === 'Married') {
+                                        return +d.number ;
+                                    } else {
+                                        return 0;
+                                    }
+                                    });
+                                    
+                                    var birthsByCountyU = county_dim.group().reduceSum(function (d) {
+                                    if (d.marital_status === 'Unmarried') {
+                                        return +d.number;
+                                    } else {
+                                        return 0;
+                                    }
+                                    });
+                                    
+                                            var stackedChart = dc.barChart("#stacked-chart-test");
+                                            stackedChart
+                                                .width(1300)
+                                                .height(350)
+                                                .dimension(county_dim)
+                                                .group(birthsByCountyM, "Married")
+                                                .stack(birthsByCountyU, "Unmarried")
+                                                .x(d3.scale.ordinal())
+                                                .xUnits(dc.units.ordinal)
+                                                .legend(dc.legend().x(420).y(0).itemHeight(15).gap(5));
+                                            stackedChart.margins().right = 100;
+        
+    dc.renderAll();
+    </script>
+</body>
+</html>
